@@ -335,7 +335,6 @@ contract Crowdsale is OwnableWithDAO, oracle, StandardToken{
     address public RezerveFond;
 
 
-
     function Crowdsale() {
         token = new DAOToken();
         coin = 1000000;
