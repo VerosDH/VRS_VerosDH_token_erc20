@@ -1,4 +1,5 @@
 Total Supply: 100 000 00
+
 Exchange Fund         25 000 000   0x21b5bbdd267dfa0c09481e04ef14eff64021274c
 Stabilization Fund    15 000 000   0x6280A4a4Cb8E589a1F843284e7e2e63edD9E6A4f
 Migration Fund        12 000 000   0x3bc441E70bb238537e43CE68763530D4e23901D6
