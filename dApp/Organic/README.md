@@ -1,0 +1,3 @@
+- purchase using VerosDH tokens(VRS)
+- purchase of eco products and services that do not harm the environment and people
+- discounts(coupons) for eco products and services in off-platform
