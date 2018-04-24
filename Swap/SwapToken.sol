@@ -1,4 +1,4 @@
-pragma solidity ^0.4.22;
+pragma solidity ^0.4.20;
 
 contract ERC20Basic {
     uint256 public totalSupply;
@@ -214,22 +214,12 @@ contract SimpleCoinToken is MintableToken{
 
     uint public INITIAL_SUPPLY;
 
-    uint public coin;
-
-    function SimpleCoinToken(string _name, string _symbol, uint32 _decimals) {
-        name = _name;
-        symbol = _symbol;
-        decimals  = _decimals;
-        coin = 10 ** uint256(decimals);
-        INITIAL_SUPPLY = 1100000 * coin;
-        mint(msg.sender, INITIAL_SUPPLY);
-    }
-
 }
 
 contract Crowdsale is Ownable {
     using SafeMath for uint;
-
+    uint public newCoin;
+    uint public oldCoin;
     SimpleCoinToken public oldToken;
     SimpleCoinToken public newToken;
     uint prise = 1000;
@@ -241,12 +231,14 @@ contract Crowdsale is Ownable {
     }
 
     function changeTokens(uint _count) {
-        uint _oldTokens = oldToken.coin();
+        uint oldCoin = 10 ** uint256(oldToken.decimals());
+        uint newCoin = 10 ** uint256(newToken.decimals());
+        uint _oldTokens = oldCoin;
         require(oldToken.balanceOf(msg.sender) >= _oldTokens.mul(_count));
-        require(newToken.balanceOf(this)>=_count.mul(newToken.coin()).div(prise));
+        require(newToken.balanceOf(this)>=_count.mul(newCoin).div(prise));
         _oldTokens = _oldTokens.mul(_count);
-        uint _newTokens = _count.mul(newToken.coin()).div(prise).mul(90).div(100);
-        uint percent = _count.mul(newToken.coin()).div(prise).mul(10).div(100);
+        uint _newTokens = _count.mul(newCoin).div(prise).mul(90).div(100);
+        uint percent = _count.mul(newCoin).div(prise).mul(10).div(100);
         oldToken.transferFrom(msg.sender, owner, _oldTokens);
         newToken.transfer(msg.sender, _newTokens);
         newToken.transfer(migrationFund, percent);
