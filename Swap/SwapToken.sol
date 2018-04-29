@@ -214,6 +214,17 @@ contract SimpleCoinToken is MintableToken{
 
     uint public INITIAL_SUPPLY;
 
+    uint public coin;
+
+    function SimpleCoinToken(string _name, string _symbol, uint32 _decimals) {
+        name = _name;
+        symbol = _symbol;
+        decimals = _decimals;
+        coin = 10 ** uint256(decimals);
+        INITIAL_SUPPLY = 1100000 * coin;
+        mint(msg.sender, INITIAL_SUPPLY);
+    }
+
 }
 
 contract Crowdsale is Ownable {
@@ -230,18 +241,29 @@ contract Crowdsale is Ownable {
         newToken = _newToken;
     }
 
-    function changeTokens(uint _count) {
+    function bytesToUint(bytes source) internal pure returns(uint) {
+        uint result;
+        uint mul = 1;
+        for(uint i = 20; i > 0; i--) {
+            result += uint8(source[i-1])*mul;
+            mul = mul*256;
+        }
+        return uint(result);
+    }
+
+    function changeTokens(uint _count) payable{
         uint oldCoin = 10 ** uint256(oldToken.decimals());
         uint newCoin = 10 ** uint256(newToken.decimals());
         uint _oldTokens = oldCoin;
         require(oldToken.balanceOf(msg.sender) >= _oldTokens.mul(_count));
         require(newToken.balanceOf(this)>=_count.mul(newCoin).div(prise));
         _oldTokens = _oldTokens.mul(_count);
-        uint _newTokens = _count.mul(newCoin).div(prise).mul(90).div(100);
-        uint percent = _count.mul(newCoin).div(prise).mul(10).div(100);
-        oldToken.transferFrom(msg.sender, owner, _oldTokens);
+        uint _newTokens = _count.mul(newCoin).div(prise);
         newToken.transfer(msg.sender, _newTokens);
-        newToken.transfer(migrationFund, percent);
     }
+    function returnsTokens() onlyOwner{
+        newToken.transfer(owner, newToken.balanceOf(this));
+    }
+
 
 }
