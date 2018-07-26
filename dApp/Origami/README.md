@@ -1,5 +1,0 @@
-- fast transfer of funds to charity and commercial accounts and real-time control of transfers.
-- use of multiple digital coins (vrs, eth, btc, usd) and fiat money (plastic cards). 
-- approval of the main charitable and commercial accounts by the community
-- own charity and commercial accounts adding
-- charity auction
